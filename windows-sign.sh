@@ -27,8 +27,6 @@ case $i in
 esac
 done
 
-cd $INSTALL_PATH
-
 if [ -z "$INPUT_PATH" ] 
 then
     echo "Input path is required. Exiting..."
