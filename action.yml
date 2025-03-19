@@ -7,6 +7,9 @@ inputs:
   macos-certificate:
     description: 'macOS certificate'
     required: false
+  macos-certificate-id:
+    description: 'macOS certificate ID'
+    required: false
   macos-certificate-password:
     description: 'macOS certificate password'
     required: false
@@ -23,7 +26,7 @@ runs:
     - name: Set variables
       id: vars
       run: |
-        echo "macos-sign=${{ runner.os == 'macOS' && inputs.macos-certificate != '' && inputs.macos-certificate-password != '' }}" >> $GITHUB_OUTPUT
+        echo "macos-sign=${{ runner.os == 'macOS' && inputs.macos-certificate != '' && inputs.macos-certificate-id != '' && inputs.macos-certificate-password != '' }}" >> $GITHUB_OUTPUT
         echo "windows-sign=${{ runner.os == 'Windows' && inputs.windows-certificate != '' && inputs.windows-certificate-password != '' }}" >> $GITHUB_OUTPUT
       shell: bash
 
@@ -49,10 +52,17 @@ runs:
       run: rm win_cert.pfx
 
     # MacOS
-    # - name: Set CodeSign Certificate macOS
-    #   if: ${{ steps.vars.outputs.macos-sign == 'true' }}
-    #   uses: apple-actions/import-codesign-certs@v2
-    #   with:
-    #     p12-file-base64: ${{ inputs.macos-certificate }}
-    #     p12-password: ${{ inputs.macos-certificate-password }}
+    - name: Set CodeSign Certificate macOS
+      if: ${{ steps.vars.outputs.macos-sign == 'true' }}
+      uses: apple-actions/import-codesign-certs@v2
+      with:
+        p12-file-base64: ${{ inputs.macos-certificate }}
+        p12-password: ${{ inputs.macos-certificate-password }}
+
+    - name: CodeSign macOS
+      shell: bash
+      if: ${{ steps.vars.outputs.macos-sign == 'true' }}
+      run: bash macos-sign.sh \
+             --input-path='${{ inputs.input-path }}' \
+             --cert_id='${{ inputs.macos-certificate-id }}'
 
