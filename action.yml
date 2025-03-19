@@ -56,7 +56,9 @@ runs:
     - name: Delete Windows certificate
       shell: bash
       if: ${{ steps.vars.outputs.windows-sign == 'true' }}
-      run: rm win_cert.pfx
+      run: |
+        rm win_cert.pfx
+        rm win_cert.txt
 
     # MacOS
     - name: Set CodeSign Certificate macOS

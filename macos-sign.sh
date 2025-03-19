@@ -3,16 +3,13 @@
 INPUT_PATH=""
 CERT_ID=""
 
-echo "Parameters: "
-echo "$@"
-echo "----------------"
-
 #checking for parameters
 for i in "$@"
 do
 case $i in
     -i=*|--input_path=*)
         INPUT_PATH="${i#*=}"
+        echo "Input path: $INPUT_PATH"
         shift # past argument=value
         ;;
     -ci=*|--cert_id=*)
@@ -21,6 +18,7 @@ case $i in
         ;;
     *)
         # unknown option
+        echo "WARNING: Unknown parameter not processed: $i"
         ;;
 esac
 done

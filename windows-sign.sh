@@ -1,12 +1,8 @@
 #!/bin/bash
 
 INPUT_PATH=""
-CERT_FILE=win_cert.pfx
+CERT_FILE=""
 CERT_PSSW=""
-
-echo "Parameters: "
-echo "$@"
-echo "----------------"
 
 #checking for parameters
 for i in "$@"
@@ -26,6 +22,7 @@ case $i in
         ;;
     *)
         # unknown option
+        echo "WARNING: Unknown parameter not processed: $i"
         ;;
 esac
 done
@@ -38,7 +35,7 @@ if [ -z "$INPUT_PATH" ]; then
 fi
 
 # if cert file does not exist, exit
-if [ ! -f $CERT_FILE ]
+if [ ! -f "$CERT_FILE" ]; then
 then
     echo "Certificate file not found. Exiting..."
     exit 1
