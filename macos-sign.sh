@@ -35,6 +35,6 @@ then
     exit 1
 fi
 
-codesign --options "runtime" --timestamp --force --deep --sign $CERT_ID $INPUT_PATH
+codesign --options "runtime" --timestamp --force --deep --sign "$CERT_ID" $INPUT_PATH
 
 spctl -a -vvv $INPUT_PATH

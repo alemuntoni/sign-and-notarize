@@ -38,7 +38,9 @@ fi
 # if cert file does not exist, exit
 if [ ! -f "$CERT_FILE" ] 
 then
-    echo "Certificate file not found. Exiting..."
+    echo "Certificate file $CERT_FILE not found. Exiting..."
+    echo "FILES:"
+    ls -la
     exit 1
 fi
 
