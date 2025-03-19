@@ -45,13 +45,13 @@ fi
 CERT_WIN=$(echo "$CERT_FILE" | sed 's/^\///' | sed 's/\//\\/g') # get windows relative path (with backslashes) of the cert
 
 # if INPUT_PATH is a file, sign it
-if [ -f $INPUT_PATH ]
+if [ -f "$INPUT_PATH" ]
 then
     FILE_WIN=$(echo "$INPUT_PATH" | sed 's/^\///' | sed 's/\//\\/g')  # win relative path
     signtool.exe sign //fd SHA256 //f $CERT_WIN //p $CERT_PSSW //t http://timestamp.comodoca.com/authenticode $FILE_WIN
-elif [ -d $INPUT_PATH ]
+elif [ -d "$INPUT_PATH" ]
 then
-    # will sign all dll and exe files inside INSTALL_PATH, recursively
+    # will sign all dll and exe files inside INPUT_PATH, recursively
     for file in $(find $INPUT_PATH -name '*.dll' -or -name '*.exe');
     do
         FILE_WIN=$(echo "$file" | sed 's/^\///' | sed 's/\//\\/g')  # win relative path
