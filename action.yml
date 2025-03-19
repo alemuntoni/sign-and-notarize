@@ -64,5 +64,5 @@ runs:
       if: ${{ steps.vars.outputs.macos-sign == 'true' }}
       run: bash ${{ github.action_path }}/macos-sign.sh \
              --input-path='${{ inputs.input-path }}' \
-             --cert_id=${{ inputs.macos-certificate-id }}
+             --cert_id='${{ inputs.macos-certificate-id }}'
 
