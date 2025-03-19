@@ -4,6 +4,10 @@ INPUT_PATH=""
 CERT_FILE=win_cert.pfx
 CERT_PSSW=""
 
+echo "Parameters: "
+echo "$@"
+echo "----------------"
+
 #checking for parameters
 for i in "$@"
 do

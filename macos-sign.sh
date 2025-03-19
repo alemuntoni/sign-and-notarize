@@ -3,6 +3,10 @@
 INPUT_PATH=""
 CERT_ID=""
 
+echo "Parameters: "
+echo "$@"
+echo "----------------"
+
 #checking for parameters
 for i in "$@"
 do
