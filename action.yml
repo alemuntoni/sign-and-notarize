@@ -26,6 +26,7 @@ runs:
     - name: Set variables
       id: vars
       run: |
+        echo '${{ inputs.input-path }}'
         echo "macos-sign=${{ runner.os == 'macOS' && inputs.macos-certificate != '' && inputs.macos-certificate-id != '' && inputs.macos-certificate-password != '' }}" >> $GITHUB_OUTPUT
         echo "windows-sign=${{ runner.os == 'Windows' && inputs.windows-certificate != '' && inputs.windows-certificate-password != '' }}" >> $GITHUB_OUTPUT
       shell: bash

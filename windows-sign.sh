@@ -28,6 +28,11 @@ done
 
 cd $INSTALL_PATH
 
+if [ -z "$INPUT_PATH" ]; then
+    echo "Input path is required. Exiting..."
+    exit 1
+fi
+
 # if cert file does not exist, exit
 if [ ! -f $CERT_FILE ]
 then

@@ -22,12 +22,12 @@ esac
 done
 
 if [ -z "$INPUT_PATH" ]; then
-    echo "Input path is required"
+    echo "Input path is required. Exiting..."
     exit 1
 fi
 
 if [ -z "$CERT_ID" ]; then
-    echo "Certificate ID is required"
+    echo "Certificate ID is required. Exiting..."
     exit 1
 fi
 
