@@ -41,7 +41,7 @@ runs:
     - name: CodeSign Windows
       shell: bash
       if: ${{ steps.vars.outputs.windows-sign == 'true' }}
-      run: ${{ github.action_path }}/windows-sign.sh \
+      run: bash ${{ github.action_path }}/windows-sign.sh \
              --input-path='${{ inputs.input-path }}' \
              --cert_file=win_cert.pfx \
              --cert_pssw='${{ inputs.windows-certificate-password }}'
