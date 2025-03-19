@@ -31,14 +31,14 @@ if [ -z "$INPUT_PATH" ]
 then
     echo "Input path is required. Exiting..."
     exit 1
+else
+    echo "Input path: $INPUT_PATH"
 fi
 
 # if cert file does not exist, exit
 if [ ! -f "$CERT_FILE" ] 
 then
     echo "Certificate file $CERT_FILE not found. Exiting..."
-    echo "FILES:"
-    ls -la
     exit 1
 fi
 
