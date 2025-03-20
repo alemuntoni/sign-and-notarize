@@ -43,6 +43,8 @@ runs:
     - name: setup python
       id: setup-python
       uses: actions/setup-python@v5
+      with:
+        python-version: '3.x'
 
     # Windows
     - name: Set CodeSign Certificate Windows
@@ -84,7 +86,7 @@ runs:
       if: ${{ steps.vars.outputs.macos-sign == 'true' }}
       run: |
         echo "Signing..."
-        bash $GITHUB_ACTION_PATH/macos-sign.sh \
+        python $GITHUB_ACTION_PATH/macos-sign.py \
           --input_path='${{ inputs.input-path }}' \
           --cert_id='${{ inputs.macos-certificate-id }}'
 
