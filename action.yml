@@ -93,6 +93,6 @@ runs:
         bash $GITHUB_ACTION_PATH/macos-notarize.sh \
           --input_path='${{ inputs.input-path }}' \
           --notarization_team='${{ inputs.macos-notarization-team }}' \
-          --user='${{ inputs.macos-notarization-user }}' \
-          --password='${{ inputs.macos-notarization-password }}'
+          --notarization_user='${{ inputs.macos-notarization-user }}' \
+          --notarization_pssw='${{ inputs.macos-notarization-password }}'
 
