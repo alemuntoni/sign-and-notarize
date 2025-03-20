@@ -29,7 +29,7 @@ def main():
                     '--keychain-profile', 'notarytool-profile', '--wait'
                 ], check=True)
 
-                subprocess.run(['xcrun', 'stapler', 'staple', file_to_send], check=True)
+                subprocess.run(['xcrun', 'stapler', 'staple', appbundle], check=True)
 
                 if os.path.exists('notarization.zip'):
                     os.remove('notarization.zip')
