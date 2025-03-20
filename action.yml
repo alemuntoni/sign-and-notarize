@@ -1,5 +1,5 @@
 name: 'Sign and Notarize'
-description: 'Sign and Notarize your macOS and Windows applications'
+description: 'Sign and Notarize your macOS applications'
 inputs:
   input-path:
     description: 'Path to the input file or directory'
@@ -25,12 +25,12 @@ inputs:
   macos-notarization-password:
     description: 'macOS notarization password'
     required: false
-  windows-certificate:
-    description: 'Windows certificate'
-    required: false
-  windows-certificate-password:
-    description: 'Windows certificate password'
-    required: false
+  # windows-certificate:
+  #   description: 'Windows certificate'
+  #   required: false
+  # windows-certificate-password:
+  #   description: 'Windows certificate password'
+  #   required: false
 
 runs:
   using: "composite"
@@ -41,7 +41,7 @@ runs:
         echo '${{ inputs.input-path }}'
         echo "macos-sign=${{ runner.os == 'macOS' && inputs.macos-certificate != '' && inputs.macos-certificate-id != '' && inputs.macos-certificate-password != '' }}" >> $GITHUB_OUTPUT
         echo "macos-notarize=${{ runner.os == 'macOS' && inputs.macos-notarization-team != '' && inputs.macos-notarization-user != '' && inputs.macos-notarization-password != '' }}" >> $GITHUB_OUTPUT
-        echo "windows-sign=${{ runner.os == 'Windows' && inputs.windows-certificate != '' && inputs.windows-certificate-password != '' }}" >> $GITHUB_OUTPUT
+        #echo "windows-sign=${{ runner.os == 'Windows' && inputs.windows-certificate != '' && inputs.windows-certificate-password != '' }}" >> $GITHUB_OUTPUT
       shell: bash
     - name: setup python
       if: ${{ steps.vars.outputs.windows-sign == 'true' }} || ${{ steps.vars.outputs.macos-sign == 'true' }} || ${{ steps.vars.outputs.macos-notarize == 'true' }}
@@ -51,38 +51,37 @@ runs:
         python-version: '3.x'
 
     # Windows
-    - name: Set CodeSign Certificate Windows
-      shell: powershell
-      if: ${{ steps.vars.outputs.windows-sign == 'true' }}
-      run: |
-        Set-Content win_cert.txt -Value '${{ inputs.windows-certificate }}'
-        certutil -decode win_cert.txt win_cert.pfx
-        # print the list of the files in the current directory
-        Get-ChildItem
+    # - name: Set CodeSign Certificate Windows
+    #   shell: powershell
+    #   if: ${{ steps.vars.outputs.windows-sign == 'true' }}
+    #   run: |
+    #     Set-Content win_cert.txt -Value '${{ inputs.windows-certificate }}'
+    #     certutil -decode win_cert.txt win_cert.pfx
+    #     # print the list of the files in the current directory
+    #     Get-ChildItem
 
-    - name: CodeSign Windows
-      shell: bash
-      if: ${{ steps.vars.outputs.windows-sign == 'true' }}
-      run: |
-        echo "Signing..."
-        python $GITHUB_ACTION_PATH/windows-sign.py \
-          --input_path='${{ inputs.input-path }}' \
-          --cert_file=win_cert.pfx \
-          --cert_pssw='${{ inputs.windows-certificate-password }}'
-        # if input-path-2 is set
-        if [ -n "${{ inputs.input-path-2 }}" ]; then
-          python $GITHUB_ACTION_PATH/windows-sign.py \
-            --input_path='${{ inputs.input-path-2 }}' \
-            --cert_file=win_cert.pfx \
-            --cert_pssw='${{ inputs.windows-certificate-password }}'
-        fi
+    # - name: CodeSign Windows
+    #   shell: bash
+    #   if: ${{ steps.vars.outputs.windows-sign == 'true' }}
+    #   run: |
+    #     python $GITHUB_ACTION_PATH/windows-sign.py \
+    #       --input_path='${{ inputs.input-path }}' \
+    #       --cert_file=win_cert.pfx \
+    #       --cert_pssw='${{ inputs.windows-certificate-password }}'
+    #     # if input-path-2 is set
+    #     if [ -n "${{ inputs.input-path-2 }}" ]; then
+    #       python $GITHUB_ACTION_PATH/windows-sign.py \
+    #         --input_path='${{ inputs.input-path-2 }}' \
+    #         --cert_file=win_cert.pfx \
+    #         --cert_pssw='${{ inputs.windows-certificate-password }}'
+    #     fi
 
-    - name: Delete Windows certificate
-      shell: bash
-      if: ${{ steps.vars.outputs.windows-sign == 'true' }}
-      run: |
-        rm win_cert.pfx
-        rm win_cert.txt
+    # - name: Delete Windows certificate
+    #   shell: bash
+    #   if: ${{ steps.vars.outputs.windows-sign == 'true' }}
+    #   run: |
+    #     rm win_cert.pfx
+    #     rm win_cert.txt
 
     # MacOS
     - name: Set CodeSign Certificate macOS
@@ -120,7 +119,6 @@ runs:
       shell: bash
       if: ${{ steps.vars.outputs.macos-notarize == 'true' }}
       run: |
-        echo "Notarizing..."
         python $GITHUB_ACTION_PATH/macos-notarize.py \
           --input_path='${{ inputs.input-path }}'
         # if input-path-2 is set
