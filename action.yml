@@ -40,6 +40,9 @@ runs:
         echo "macos-notarize=${{ runner.os == 'macOS' && inputs.macos-notarization-team != '' && inputs.macos-notarization-user != '' && inputs.macos-notarization-password != '' }}" >> $GITHUB_OUTPUT
         echo "windows-sign=${{ runner.os == 'Windows' && inputs.windows-certificate != '' && inputs.windows-certificate-password != '' }}" >> $GITHUB_OUTPUT
       shell: bash
+    - name: setup python
+      id: setup-python
+      uses: actions/setup-python@v5
 
     # Windows
     - name: Set CodeSign Certificate Windows
@@ -56,7 +59,7 @@ runs:
       if: ${{ steps.vars.outputs.windows-sign == 'true' }}
       run: |
         echo "Signing..."
-        bash $GITHUB_ACTION_PATH/windows-sign.sh \
+        python $GITHUB_ACTION_PATH/windows-sign.py \
           --input_path='${{ inputs.input-path }}' \
           --cert_file=win_cert.pfx \
           --cert_pssw='${{ inputs.windows-certificate-password }}'
