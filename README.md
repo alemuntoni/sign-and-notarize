@@ -7,7 +7,7 @@ Usage in your workflow (sign and notarize all the files in the install folder):
 
 ```
 - name: Sign and notarize portables
-  uses: alemuntoni/sign-and-notarize@v1
+  uses: cnr-isti-vclab/sign-and-notarize@v1
   with:
     input-path: 'install/*'
     input-path-2: 'install2/*' # optional
@@ -28,7 +28,7 @@ To sign files on MacOS you need to have a certificate , its password and a certi
 
 ```
 - name: Sign and notarize portables
-  uses: alemuntoni/sign-and-notarize@v1
+  uses: cnr-isti-vclab/sign-and-notarize@v1
   with:
     input-path: 'install/myApp.app'
     macos-certificate: '${{ secrets.MACOS_CERTIFICATE }}'
@@ -44,7 +44,7 @@ To notarize files on MacOS you need to have a notarization user , its password, 
 
 ```
 - name: Sign and notarize portables
-  uses: alemuntoni/sign-and-notarize@v1
+  uses: cnr-isti-vclab/sign-and-notarize@v1
   with:
     input-path: 'install/myApp.app'
     macos-notarization-team: '${{ secrets.MACOS_NOTARIZATION_TEAM_ID }}'
@@ -60,7 +60,7 @@ To both sign and notarize, all the required secrets should be provided.
 
 ```
 - name: Sign and notarize portables
-  uses: alemuntoni/sign-and-notarize@v1
+  uses: cnr-isti-vclab/sign-and-notarize@v1
   with:
     input-path: 'install/myApp.app'
     macos-certificate: '${{ secrets.MACOS_CERTIFICATE }}'

@@ -86,7 +86,7 @@ runs:
     # MacOS
     - name: Set CodeSign Certificate macOS
       if: ${{ steps.vars.outputs.macos-sign == 'true' }}
-      uses: apple-actions/import-codesign-certs@v2
+      uses: apple-actions/import-codesign-certs@v3
       with:
         p12-file-base64: ${{ inputs.macos-certificate }}
         p12-password: ${{ inputs.macos-certificate-password }}
