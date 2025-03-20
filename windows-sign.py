@@ -30,8 +30,8 @@ def main():
     def sign_file(file_path):
         file_win = file_path.replace('/', '\\')
         subprocess.run([
-            'signtool.exe', 'sign', '//fd', 'SHA256', '//f', cert_win, '//p', cert_pssw, 
-            '//t', 'http://timestamp.comodoca.com/authenticode', file_win
+            'signtool.exe', 'sign', '/fd', 'SHA256', '/f', cert_win, '/p', cert_pssw, 
+            '/t', 'http://timestamp.comodoca.com/authenticode', file_win
         ], check=True)
 
     if os.path.isfile(input_path):
