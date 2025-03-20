@@ -27,7 +27,8 @@ def main():
                 'codesign', '--options', 'runtime', '--timestamp', '--force', '--deep', '--sign', cert_id, file_path
             ], check=True)
 
-            subprocess.run(['spctl', '-a', '-vvv', file_path], check=True)
+            if file_path.endswith('.app'):
+                subprocess.run(['spctl', '-a', '-vvv', file_path], check=True)
         except subprocess.CalledProcessError as e:
             print(f"An error occurred: {e}")
             sys.exit(1)
