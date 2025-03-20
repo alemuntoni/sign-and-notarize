@@ -18,15 +18,7 @@ def main():
         print("Certificate ID is required. Exiting...")
         sys.exit(1)
 
-    # if not os.path.exists(input_path):
-    #     print(f"Input path {input_path} not found. Exiting...")
-    #     sys.exit(1)
-    # else:
-    #     print(f"Input path: {input_path}")
-
     matching_files = glob.glob(input_path)
-
-    print(f"Matching files: {matching_files}")
 
     def sign_file(file_path):
         print(f"Signing {file_path}...")

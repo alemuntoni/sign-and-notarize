@@ -2,7 +2,7 @@ import os
 import sys
 import argparse
 import subprocess
-import re
+import glob
 
 def main():
     parser = argparse.ArgumentParser(description='Sign files using signtool.exe')
@@ -22,11 +22,7 @@ def main():
 
     cert_win = cert_file.replace('/', '\\')
 
-    if not os.path.exists(input_path):
-        print(f"Input path {input_path} not found. Exiting...")
-        sys.exit(1)
-    else:
-        print(f"Input path: {input_path}")
+    matching_files = glob.glob(input_path)
 
     def sign_file(file_path):
         if file_path.endswith('.dll') or file_path.endswith('.exe'):
@@ -41,15 +37,13 @@ def main():
                 print(f"An error occurred: {e}")
                 sys.exit(1)
 
-    if os.path.isfile(input_path):
-        sign_file(input_path)
-    elif os.path.isdir(input_path):
-        for root, _, files in os.walk(input_path):
-            for file in files:
-                sign_file(os.path.join(root, file))
-    else:
-        print("Input path not found. Exiting...")
-        sys.exit(1)
+    for file in matching_files:
+        if os.path.isfile(file):
+            sign_file(file)
+        elif os.path.isdir(file):
+            for root, _, files in os.walk(file):
+                for f in files:
+                    sign_file(os.path.join(root, f))
 
 if __name__ == "__main__":
     main()

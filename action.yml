@@ -85,7 +85,6 @@ runs:
       shell: bash
       if: ${{ steps.vars.outputs.macos-sign == 'true' }}
       run: |
-        echo "Signing..."
         python $GITHUB_ACTION_PATH/macos-sign.py \
           --input_path='${{ inputs.input-path }}' \
           --cert_id='${{ inputs.macos-certificate-id }}'
