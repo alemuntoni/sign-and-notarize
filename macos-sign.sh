@@ -9,7 +9,6 @@ do
 case $i in
     -i=*|--input_path=*)
         INPUT_PATH="${i#*=}"
-        echo "Input path: $INPUT_PATH"
         shift # past argument=value
         ;;
     -ci=*|--cert_id=*)
@@ -38,3 +37,5 @@ fi
 codesign --options "runtime" --timestamp --force --deep --sign "$CERT_ID" $INPUT_PATH
 
 spctl -a -vvv $INPUT_PATH
+
+exit 0
