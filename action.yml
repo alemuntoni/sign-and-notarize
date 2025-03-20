@@ -95,7 +95,7 @@ runs:
       if: ${{ steps.vars.outputs.macos-notarize == 'true' }}
       run: |
         echo "Notarizing..."
-        bash $GITHUB_ACTION_PATH/macos-notarize.sh \
+        python $GITHUB_ACTION_PATH/macos-notarize.py \
           --input_path='${{ inputs.input-path }}' \
           --notarization_team='${{ inputs.macos-notarization-team }}' \
           --notarization_user='${{ inputs.macos-notarization-user }}' \
