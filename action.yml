@@ -4,6 +4,9 @@ inputs:
   input-path:
     description: 'Path to the input file or directory'
     required: true
+  input-path-2:
+    description: 'Path to the input file or directory'
+    required: false
   macos-certificate:
     description: 'macOS certificate'
     required: false
@@ -41,6 +44,7 @@ runs:
         echo "windows-sign=${{ runner.os == 'Windows' && inputs.windows-certificate != '' && inputs.windows-certificate-password != '' }}" >> $GITHUB_OUTPUT
       shell: bash
     - name: setup python
+      if: ${{ steps.vars.outputs.windows-sign == 'true' }} || ${{ steps.vars.outputs.macos-sign == 'true' }} || ${{ steps.vars.outputs.macos-notarize == 'true' }}
       id: setup-python
       uses: actions/setup-python@v5
       with:
@@ -65,6 +69,13 @@ runs:
           --input_path='${{ inputs.input-path }}' \
           --cert_file=win_cert.pfx \
           --cert_pssw='${{ inputs.windows-certificate-password }}'
+        # if input-path-2 is set
+        if [ -n "${{ inputs.input-path-2 }}" ]; then
+          python $GITHUB_ACTION_PATH/windows-sign.py \
+            --input_path='${{ inputs.input-path-2 }}' \
+            --cert_file=win_cert.pfx \
+            --cert_pssw='${{ inputs.windows-certificate-password }}'
+        fi
 
     - name: Delete Windows certificate
       shell: bash
@@ -88,6 +99,22 @@ runs:
         python $GITHUB_ACTION_PATH/macos-sign.py \
           --input_path='${{ inputs.input-path }}' \
           --cert_id='${{ inputs.macos-certificate-id }}'
+        # if input-path-2 is set
+        if [ -n "${{ inputs.input-path-2 }}" ]; then
+          python $GITHUB_ACTION_PATH/macos-sign.py \
+            --input_path='${{ inputs.input-path-2 }}' \
+            --cert_id='${{ inputs.macos-certificate-id }}'
+        fi
+
+    - name: Set Notatization Credentials
+      shell: bash
+      if: ${{ steps.vars.outputs.macos-notarize == 'true' }}
+      run: |
+        echo "Setting notarization credentials..."
+        python $GITHUB_ACTION_PATH/macos-notar-cred.py \
+          --notarization_team='${{ inputs.macos-notarization-team }}' \
+          --notarization_user='${{ inputs.macos-notarization-user }}' \
+          --notarization_pssw='${{ inputs.macos-notarization-password }}'
 
     - name: Notarize macOS
       shell: bash
@@ -95,8 +122,10 @@ runs:
       run: |
         echo "Notarizing..."
         python $GITHUB_ACTION_PATH/macos-notarize.py \
-          --input_path='${{ inputs.input-path }}' \
-          --notarization_team='${{ inputs.macos-notarization-team }}' \
-          --notarization_user='${{ inputs.macos-notarization-user }}' \
-          --notarization_pssw='${{ inputs.macos-notarization-password }}'
+          --input_path='${{ inputs.input-path }}'
+        # if input-path-2 is set
+        if [ -n "${{ inputs.input-path-2 }}" ]; then
+          python $GITHUB_ACTION_PATH/macos-notarize.py \
+            --input_path='${{ inputs.input-path-2 }}'
+        fi
 
