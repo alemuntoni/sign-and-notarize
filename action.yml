@@ -55,6 +55,7 @@ runs:
       shell: bash
       if: ${{ steps.vars.outputs.windows-sign == 'true' }}
       run: |
+        echo "Signing..."
         bash $GITHUB_ACTION_PATH/windows-sign.sh \
           --input_path='${{ inputs.input-path }}' \
           --cert_file=win_cert.pfx \
@@ -79,6 +80,7 @@ runs:
       shell: bash
       if: ${{ steps.vars.outputs.macos-sign == 'true' }}
       run: |
+        echo "Signing..."
         bash $GITHUB_ACTION_PATH/macos-sign.sh \
           --input_path='${{ inputs.input-path }}' \
           --cert_id='${{ inputs.macos-certificate-id }}'
@@ -87,6 +89,7 @@ runs:
       shell: bash
       if: ${{ steps.vars.outputs.macos-notarize == 'true' }}
       run: |
+        echo "Notarizing..."
         bash $GITHUB_ACTION_PATH/macos-notarize.sh \
           --input_path='${{ inputs.input-path }}' \
           --notarization_team='${{ inputs.macos-notarization-team }}' \
